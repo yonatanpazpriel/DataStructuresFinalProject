@@ -13,7 +13,7 @@ public class Main {
 
         // build your own world!
         World x = new World();
-        int [][] yippee = x.getWorld();
+        int [][] yippee = x.createWorld();
         print2DArray(yippee);
 
     }
