@@ -49,13 +49,17 @@ public class World {
     3 = wall
      */
     private void markLocation(int x, int y, int mark) {
+        if (world[y][x] ==0) {
+            size+=1;
+        };
         world[y][x] = mark;
+        //size += 1;
     }
 
     private int countMarkedLocs() {
         int count = 0;
         for (int i = 0; i < world.length; i++) {
-            for (int j = 0; j < world[0].length; i++) {
+            for (int j = 0; j < world[0].length; j++) {
                 if (world[i][j] != 0) {
                     count++;
                 }
@@ -70,7 +74,6 @@ public class World {
         int x = node.x;
         int y = node.y;
         int direction = node.direction;
-        size += roomHeight * roomWidth;
 
         for (int i = 0; i <= roomWidth; i++) {
             for (int j = 0; j <= roomHeight; j++) {
@@ -85,16 +88,16 @@ public class World {
         int nextYValue = 0;
         int newDirection = generateRandomDirection();
 
-        if (direction == 0) { // up
+        if (newDirection == 0) { // up
             nextXValue = random.nextInt(roomWidth) + x;
             nextYValue = y + roomHeight;
-        } else if (direction == 1) { // right
+        } else if (newDirection == 1) { // right
             nextXValue = x + roomWidth;
             nextYValue = random.nextInt(roomHeight) + y;
-        } else if (direction == 2) {// down
+        } else if (newDirection == 2) {// down
             nextXValue = random.nextInt(roomWidth) + x;
             nextYValue = y;
-        } else if (direction == 3) { // left
+        } else if (newDirection == 3) { // left
             nextXValue = x;
             nextYValue = random.nextInt(roomHeight) + y;
         }
@@ -121,7 +124,6 @@ public class World {
     private NextOriginNode generateVerticalHallway(int x, int y, int direction){
         ///generates hallway toward 'direction' starting at (x,y)
         int currHeight = generateVerticalLengths(20);
-        size += currHeight;
         return generateVerticalHallwayHelper(y, currHeight, x, direction);
     }
 
@@ -144,7 +146,6 @@ public class World {
     private NextOriginNode generateHorizontalHallway(int x, int y, int direction) {
          ///generates hallway toward 'direction' starting at (x,y)
         int currLength = generateHorizontalLengths(20);
-        size += currLength;
         return generateHorizontalHallwayHelper(x, currLength, y, direction);
     }
 
