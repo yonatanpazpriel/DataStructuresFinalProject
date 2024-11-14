@@ -7,14 +7,15 @@ public class World {
     // hallway obj
     // world initializer
 
-    private static final int WIDTH = 60;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 40;
+    private static final int HEIGHT = 40;
     private static final Random random = new Random();
 
     private int[][] world;
     private int currentLocation;
     //private WeightedQuickUnionUF nodes;
     private int size;
+    private int marked;
 
 
     public World () {
@@ -55,7 +56,7 @@ public class World {
     private int countMarkedLocs() {
         int count = 0;
         for (int i = 0; i < world.length; i++) {
-            for (int j = 0; j < world[0].length; i++) {
+            for (int j = 0; j < world[0].length; j++) {
                 if (world[i][j] != 0) {
                     count++;
                 }
@@ -65,12 +66,13 @@ public class World {
     }
 
     private NextOriginNode generateRoom(NextOriginNode node) {
-        int roomWidth = generateHorizontalLengths(8) + 1;
-        int roomHeight = generateVerticalLengths(8) + 1;
+        int roomWidth = generateHorizontalLengths(14) + 1;
+        int roomHeight = generateVerticalLengths(14) + 1;
         int x = node.x;
         int y = node.y;
         int direction = node.direction;
         size += roomHeight * roomWidth;
+        marked = countMarkedLocs();
 
         for (int i = 0; i <= roomWidth; i++) {
             for (int j = 0; j <= roomHeight; j++) {
@@ -120,8 +122,9 @@ public class World {
     ///creates hallways along the height of the world!
     private NextOriginNode generateVerticalHallway(int x, int y, int direction){
         ///generates hallway toward 'direction' starting at (x,y)
-        int currHeight = generateVerticalLengths(20);
+        int currHeight = generateVerticalLengths(30);
         size += currHeight;
+        marked = countMarkedLocs();
         return generateVerticalHallwayHelper(y, currHeight, x, direction);
     }
 
@@ -145,6 +148,7 @@ public class World {
          ///generates hallway toward 'direction' starting at (x,y)
         int currLength = generateHorizontalLengths(20);
         size += currLength;
+        marked = countMarkedLocs();
         return generateHorizontalHallwayHelper(x, currLength, y, direction);
     }
 
@@ -185,10 +189,16 @@ public class World {
     ///callsfillRooms first
     public int[][] createWorld(){
         NextOriginNode nextCoord = new NextOriginNode(random.nextInt(WIDTH), random.nextInt(HEIGHT), 0);
-        while (size < 0.4 * WIDTH * HEIGHT) {
+        while (size < 0.6 * WIDTH * HEIGHT) {
             nextCoord = generateRoom(nextCoord);
             nextCoord = generateHallway(nextCoord);
+            marked = countMarkedLocs();
         }
+        generateRoom(nextCoord);
+        //System.out.println(WIDTH * HEIGHT);
+        System.out.println(size);
+        System.out.println(countMarkedLocs());
+        System.out.println(marked);
         return world;
     }
 
