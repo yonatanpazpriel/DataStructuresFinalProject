@@ -90,15 +90,15 @@ public class World {
 
         if (newDirection == 0) { // up
             nextXValue = random.nextInt(roomWidth) + x;
-            nextYValue = y + roomHeight;
+            nextYValue = y + roomHeight+1;
         } else if (newDirection == 1) { // right
-            nextXValue = x + roomWidth;
+            nextXValue = x + roomWidth+1;
             nextYValue = random.nextInt(roomHeight) + y;
         } else if (newDirection == 2) {// down
             nextXValue = random.nextInt(roomWidth) + x;
-            nextYValue = y;
+            nextYValue = y-1;
         } else if (newDirection == 3) { // left
-            nextXValue = x;
+            nextXValue = x-1;
             nextYValue = random.nextInt(roomHeight) + y;
         }
         return new NextOriginNode(nextXValue, nextYValue, newDirection);
