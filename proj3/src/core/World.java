@@ -75,8 +75,8 @@ public class World {
         int y = node.y;
         int direction = node.direction;
 
-        for (int i = 0; i <= roomWidth; i++) {
-            for (int j = 0; j <= roomHeight; j++) {
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
                 if (convertY(y + j) >= HEIGHT - 1 || x + i >= WIDTH - 1) {
                     break;
                 }
@@ -90,18 +90,90 @@ public class World {
 
         if (newDirection == 0) { // up
             nextXValue = random.nextInt(roomWidth) + x;
-            nextYValue = y + roomHeight+1;
+            nextYValue = y - 1;
         } else if (newDirection == 1) { // right
             nextXValue = x + roomWidth+1;
             nextYValue = random.nextInt(roomHeight) + y;
         } else if (newDirection == 2) {// down
             nextXValue = random.nextInt(roomWidth) + x;
-            nextYValue = y-1;
+            nextYValue = y+roomHeight;
         } else if (newDirection == 3) { // left
             nextXValue = x-1;
             nextYValue = random.nextInt(roomHeight) + y;
         }
         return new NextOriginNode(nextXValue, nextYValue, newDirection);
+    }
+
+    private NextOriginNode roomGenerationSelector(int direction) { ///selects which way to generate the room given direction of the previous hallway
+        NextOriginNode toReturn;
+        if (direction == 0 || direction == 2) {
+            int temporary = random.nextInt(2);
+            if (temporary == 0) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private NextOriginNode generateRoomRightDown(int roomWidth, int roomHeight, int x, int y, int direction) {
+        int currX = x;
+        int currY = y;
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
+                if (convertY(y + j) >= HEIGHT - 1 || x + i >= WIDTH - 1) {
+                    break;
+                }
+                markLocation(x + i, convertY(y + j), 2);
+                currX = x+i;
+                currY = y+j;
+            }
+        }
+        return new NextOriginNode(currX, currY, direction);
+    }
+    private NextOriginNode generateRoomRightUp (int roomWidth, int roomHeight, int x, int y, int direction) {
+        int currX = x;
+        int currY = y;
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
+                if (y-j <= 1 || x + i >= WIDTH - 1) {
+                    break;
+                }
+                markLocation(x + i, convertY(y - j), 2);
+                currX = x+i;
+                currY = y-j;
+            }
+        }
+        return new NextOriginNode(currX, currY, direction);
+    }
+    private NextOriginNode generateRoomLeftDown(int roomWidth, int roomHeight, int x, int y, int direction) {
+        int currX = x;
+        int currY = y;
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
+                if (convertY(y + j) >= HEIGHT - 1 || x - i <= 1) {
+                    break;
+                }
+                markLocation(x - i, convertY(y + j), 2);
+                currX = x-i;
+                currY = y+j;
+            }
+        }
+        return new NextOriginNode(currX, currY, direction);
+    }
+    private NextOriginNode generateRoomLeftUp (int roomWidth, int roomHeight, int x, int y, int direction) {
+        int currX = x;
+        int currY = y;
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
+                if (y-j <= 1 || x - i <= 1) {
+                    break;
+                }
+                markLocation(x - i, convertY(y - j), 2);
+                currX = x-i;
+                currY = y-j;
+            }
+        }
+        return new NextOriginNode(currX, currY, direction);
     }
 
 
