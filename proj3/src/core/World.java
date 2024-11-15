@@ -11,13 +11,8 @@ public class World {
     // hallway obj
     // world initializer
 
-<<<<<<< HEAD
-    private static final int WIDTH = 40;
-    private static final int HEIGHT = 40;
-=======
     public static final int WIDTH = 60;
     public static final int HEIGHT = 60;
->>>>>>> c06c54ca3d4520e784ce3d7b8de6917de76c46de
     private static final Random random = new Random();
 
 
@@ -25,7 +20,6 @@ public class World {
     private int currentLocation;
     //private WeightedQuickUnionUF nodes;
     private int size;
-    private int marked;
 
 
     public World () {
@@ -80,21 +74,11 @@ public class World {
     }
 
     private NextOriginNode generateRoom(NextOriginNode node) {
-<<<<<<< HEAD
-        int roomWidth = generateHorizontalLengths(14) + 1;
-        int roomHeight = generateVerticalLengths(14) + 1;
-=======
         int roomWidth = generateHorizontalLengths(6) + 2;
         int roomHeight = generateVerticalLengths(5) + 2;
->>>>>>> c06c54ca3d4520e784ce3d7b8de6917de76c46de
         int x = node.x;
         int y = node.y;
         int direction = node.direction;
-<<<<<<< HEAD
-        size += roomHeight * roomWidth;
-        marked = countMarkedLocs();
-=======
->>>>>>> b855a51dd707633508bda44ce58d5bde5ff5cf01
 
         NextOriginNode finalCoordinates = roomGenerationSelector(roomWidth, roomHeight, x, y, direction);
         int finalX = finalCoordinates.x;
@@ -164,15 +148,20 @@ public class World {
                 if (convertY(y + j) >= HEIGHT - 2|| x + i >= WIDTH - 1) {
                     break;
                 }
+
                 if(world[y+j][x+i] != 0) {
                     tally += 1;
                 }
+
                 markLocation(x + i, convertY(y + j), 2);
                 currX = x+i;
                 currY = y+j;
+                /*
                 if (tally >= .1 * roomWidth*roomHeight) {
                     break;
                 }
+
+                 */
             }
         }
 
@@ -193,9 +182,12 @@ public class World {
                 markLocation(x + i, convertY(y - j), 2);
                 currX = x+i;
                 currY = y-j;
-                if (tally >= .25 * roomWidth*roomHeight) {
+                /*
+                if (tally >= .1 * roomWidth*roomHeight) {
                     break;
                 }
+
+                 */
             }
         }
 
@@ -216,9 +208,12 @@ public class World {
                 markLocation(x - i, convertY(y + j), 2);
                 currX = x-i;
                 currY = y+j;
-                if (tally >= .25 * roomWidth*roomHeight) {
+                /*
+                if (tally >= .1 * roomWidth*roomHeight) {
                     break;
                 }
+
+                 */
             }
         }
 
@@ -241,9 +236,12 @@ public class World {
                 markLocation(newX, newY, 2);
                 currX = newX;
                 currY = newY;
+                /*
                 if (tally >= .1 * roomWidth*roomHeight) {
                     break;
                 }
+
+                 */
             }
         }
 
@@ -277,17 +275,7 @@ public class World {
     ///creates hallways along the height of the world!
     private NextOriginNode generateVerticalHallway(int x, int y, int direction){
         ///generates hallway toward 'direction' starting at (x,y)
-<<<<<<< HEAD
-<<<<<<< HEAD
-        int currHeight = generateVerticalLengths(30);
-        size += currHeight;
-        marked = countMarkedLocs();
-=======
-        int currHeight = generateVerticalLengths(20);
->>>>>>> b855a51dd707633508bda44ce58d5bde5ff5cf01
-=======
         int currHeight = generateVerticalLengths(15);
->>>>>>> c06c54ca3d4520e784ce3d7b8de6917de76c46de
         return generateVerticalHallwayHelper(y, currHeight, x, direction);
     }
 
@@ -320,17 +308,8 @@ public class World {
 
     ///creates hallways along the width of the world!
     private NextOriginNode generateHorizontalHallway(int x, int y, int direction) {
-         ///generates hallway toward 'direction' starting at (x,y)
-<<<<<<< HEAD
-        int currLength = generateHorizontalLengths(20);
-<<<<<<< HEAD
-        size += currLength;
-        marked = countMarkedLocs();
-=======
->>>>>>> b855a51dd707633508bda44ce58d5bde5ff5cf01
-=======
+        ///generates hallway toward 'direction' starting at (x,y)
         int currLength = generateHorizontalLengths(15);
->>>>>>> c06c54ca3d4520e784ce3d7b8de6917de76c46de
         return generateHorizontalHallwayHelper(x, currLength, y, direction);
     }
 
@@ -379,15 +358,36 @@ public class World {
         return random.nextInt(4);
     }
 
+    private void createWalls() {
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                if (world[j][i] == 1 || world[j][i] == 2) { // pick floor tiles
+                    wallHelper(i, j); // surround floor tiles with walls
+                }
+            }
+        }
+    }
+
+    private void wallHelper(int i, int j) {
+
+        if (j + 1 <= HEIGHT && world[j + 1][i] == 0) { // right
+            world[j + 1][i] = 3;
+        }
+        if (i - 1 >= 0 && world[j][i - 1] == 0) { //  bottom
+            world[j][i - 1] = 3;
+        }
+        if (j - 1 >= 0 && world[j - 1][i] == 0) { // left
+            world[j - 1][i] = 3;
+        }
+        if (i + 1 < WIDTH && world[j][i + 1] == 0) { // top
+            world[j][i + 1] = 3;
+        }
+    }
+
+
+
     ///callsfillRooms first
     public int[][] createWorld(){
-<<<<<<< HEAD
-        NextOriginNode nextCoord = new NextOriginNode(random.nextInt(WIDTH), random.nextInt(HEIGHT), 0);
-        while (size < 0.6 * WIDTH * HEIGHT) {
-            nextCoord = generateRoom(nextCoord);
-            nextCoord = generateHallway(nextCoord);
-            marked = countMarkedLocs();
-=======
         Instant start = Instant.now();
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
@@ -397,15 +397,13 @@ public class World {
             nextCoord = generateHallway(nextCoord);
             end = Instant.now();
             timeElapsed = Duration.between(start, end);
->>>>>>> c06c54ca3d4520e784ce3d7b8de6917de76c46de
         }
-        generateRoom(nextCoord);
-        //System.out.println(WIDTH * HEIGHT);
-        System.out.println(size);
-        System.out.println(countMarkedLocs());
-        System.out.println(marked);
+        createWalls();
         return world;
     }
+
+
+
 
     private class NextOriginNode {
         int x;

@@ -30,8 +30,10 @@ public class Main {
         for (int i = 0; i< WIDTH; i++) {
             for (int y = 0; y < HEIGHT; y++) {
                 world[i][y] = Tileset.NOTHING;
-                if (yippee[i][y] != 0) {
+                if (yippee[i][y] == 1 || yippee[i][y] == 2) {
                     world[i][y] = Tileset.GRASS;
+                } else if (yippee[i][y] == 3) {
+                    world[i][y] = Tileset.WALL;
                 }
             }
         }
