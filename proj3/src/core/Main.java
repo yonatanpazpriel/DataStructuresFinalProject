@@ -1,5 +1,12 @@
 package core;
 
+import tileengine.TERenderer;
+import tileengine.TETile;
+import tileengine.Tileset;
+
+import static core.World.HEIGHT;
+import static core.World.WIDTH;
+
 public class Main {
     public static void print2DArray(int[][] array) {
         for (int i = 0; i < array.length; i++) {          // Iterate over rows
@@ -11,10 +18,23 @@ public class Main {
     }
     public static void main(String[] args) {
 
+
+
+
         // build your own world!
         World x = new World();
         int [][] yippee = x.createWorld();
-        print2DArray(yippee);
-
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        TETile[][] world = new TETile[WIDTH][HEIGHT];
+        for (int i = 0; i< WIDTH; i++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                world[i][y] = Tileset.NOTHING;
+                if (yippee[i][y] != 0) {
+                    world[i][y] = Tileset.GRASS;
+                }
+            }
+        }
+        ter.renderFrame(world);
     }
 }
