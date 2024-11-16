@@ -17,10 +17,7 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-
-
-
-
+        int SEED = 0;
         // build your own world!
         World x = new World();
         int [][] yippee = x.createWorld();
