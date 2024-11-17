@@ -11,9 +11,13 @@ public class World {
     // hallway obj
     // world initializer
 
-    public static final int WIDTH = 60;
-    public static final int HEIGHT = 60;
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
     private static final Random random = new Random();
+
+    /*
+    when you get an invalid index, you should go somewhere else and try something new.
+     */
 
 
     private int[][] world;
@@ -22,6 +26,7 @@ public class World {
     private int topLeftQuad;
     private int bottomRightQuad;
     private int bottomLeftQuad;
+    private NextOriginNode safetyFallback;
 
 
 
@@ -67,10 +72,9 @@ public class World {
         }
     }
 
-
-    private NextOriginNode generateRoom(NextOriginNode node) {
-        int roomWidth = generateHorizontalLengths(12) + 2;
-        int roomHeight = generateVerticalLengths(12) + 2;
+    private NextOriginNode generateRoom(NextOriginNode node, int numAttempts) {
+        int roomWidth = generateHorizontalLengths(8) + 2;
+        int roomHeight = generateVerticalLengths(8) + 2;
         int x = node.x;
         int y = node.y;
         int direction = node.direction;
@@ -84,12 +88,12 @@ public class World {
         int newDirection = generateRandomDirection();
 
         if (newDirection == 0) { // up
-            nextYValue = Math.min(finalY, y);
-            int tempX = Math.min(finalX, x);
+            nextYValue = Math.min(finalY, y); // top y
+            int tempX = Math.min(finalX, x); // left X
             nextXValue = tempX + random.nextInt(roomWidth);
         } else if (newDirection == 1) { // right
-            nextXValue = Math.max(finalX, x);
-            int tempY = Math.min(finalY, y);
+            nextXValue = Math.max(finalX, x); // right x
+            int tempY = Math.min(finalY, y); // top y
             nextYValue = tempY + random.nextInt(roomHeight);
         } else if (newDirection == 2) {// down
             nextYValue = Math.max(finalY, y);
@@ -105,6 +109,7 @@ public class World {
 
     private NextOriginNode roomGenerationSelector(int roomWidth, int roomHeight, int x, int y, int direction) { ///selects which way to generate the room given direction of the previous hallway
         int rndm = random.nextInt(2);
+
         if (direction == 1) {
             if (rndm == 1) {
                 return generateRoomRightUp(roomWidth, roomHeight, x, y, direction);
@@ -133,7 +138,6 @@ public class World {
     }
 
     private NextOriginNode generateRoomRightDown(int roomWidth, int roomHeight, int x, int y, int direction){
-        int tally = 0;
         int currX = x;
         int currY = y;
         boolean breaker = false;
@@ -145,22 +149,20 @@ public class World {
                 if (convertY(y + j) >= HEIGHT - 2|| x + i >= WIDTH - 1 || x + i <= 1 || y + j <= 1) {
                     System.out.println("RRD");
                     breaker = true;
-                    break;
                 }
                 markLocation(x + i, convertY(y + j), 2);
                 currX = x+i;
                 currY = y+j;
-                /*
-                if (tally >= .1 * roomWidth*roomHeight) {
-                    break;
-                }
 
-                 */
             }
         }
-
-        return new NextOriginNode(currX, currY, direction);
+        if (breaker) {
+            return new NextOriginNode(x, y, generateRandomDirection());
+        } else {
+            return new NextOriginNode(currX, currY, direction);
+        }
     }
+
     private NextOriginNode generateRoomRightUp (int roomWidth, int roomHeight, int x, int y, int direction) {
         int tally = 0;
         int currX = x;
@@ -175,13 +177,15 @@ public class World {
                     System.out.println("RRU");
                     breaker = true;
                     break;
+                } else {
+                    markLocation(x + i, convertY(y - j), 2);
+                    currX = x+i;
+                    currY = y-j;
                 }
                 if(world[y-j][x+i] != 0) {
                     tally += 1;
                 }
-                markLocation(x + i, convertY(y - j), 2);
-                currX = x+i;
-                currY = y-j;
+                // keeps trying to make things that are out of bounds
                 /*
                 if (tally >= .1 * roomWidth*roomHeight) {
                     break;
@@ -190,8 +194,11 @@ public class World {
                  */
             }
         }
-
-        return new NextOriginNode(currX, currY, direction);
+        if (breaker) {
+            return new NextOriginNode(x, y, generateRandomDirection());
+        } else {
+            return new NextOriginNode(currX, currY, direction);
+        }
     }
     private NextOriginNode generateRoomLeftDown(int roomWidth, int roomHeight, int x, int y, int direction) {
         int tally = 0;
@@ -223,7 +230,11 @@ public class World {
                  */
             }
         }
-                return new NextOriginNode(currX, currY, direction);
+        if (breaker) {
+            return new NextOriginNode(x, y, generateRandomDirection());
+        } else {
+            return new NextOriginNode(currX, currY, direction);
+        }
     }
     private NextOriginNode generateRoomLeftUp(int roomWidth, int roomHeight, int x, int y, int direction) {
         int currX = x;
@@ -257,18 +268,13 @@ public class World {
                  */
             }
         }
-        return new NextOriginNode(currX, currY, direction);
-    }
-/*
-    private int fixHeight(int roomHeight, int start, int direction) {
-        if (direction == 0) {
-            while (start + roomHeight > HEIGHT - 2) {
-                roomHeight--;
-            }
+        if (breaker) {
+            return new NextOriginNode(x, y, generateRandomDirection());
+        } else {
+            return new NextOriginNode(currX, currY, direction);
         }
-
     }
-    */
+
 
     // need to pick (x,y) from room - assume direction, x,y passed into genHallways is valid
     private NextOriginNode generateHallway(NextOriginNode node) {
@@ -399,44 +405,23 @@ public class World {
         int totalThings = 0;
         int count = 0;
         double percent = (double) size / (WIDTH * HEIGHT);
-        while (count < 100 && size < 0.25 * WIDTH * HEIGHT) {//(percent < 0.35 && timeElapsed.toSeconds()<1 && totalThings < 50000) {
+        while (count < 3 && size < 900) {//(percent < 0.35 && timeElapsed.toSeconds()<1 && totalThings < 50000) {
             count++;
             System.out.println(count);
             if (bonusHallwayChance == 2) {
                 int currDirection = nextCoord.direction + 1;
-                //nextCoord = generateHallway(new NextOriginNode(nextCoord.x, nextCoord.y, currDirection % 4));
+                nextCoord = generateHallway(new NextOriginNode(nextCoord.x, nextCoord.y, currDirection % 4));
                 hallsCreated++;
             }
-            nextCoord = generateRoom(nextCoord);
-            roomsCreated++;
+            nextCoord = generateRoom(nextCoord, 0);
             nextCoord = generateHallway(nextCoord);
-            hallsCreated++;
+
+
+
 
             bonusHallwayChance = random.nextInt(4);
             end = Instant.now();
             timeElapsed = Duration.between(start, end);
-            totalThings = hallsCreated + roomsCreated;
-            percent = (double) size / (WIDTH * HEIGHT);
-        }
-
-        if (totalThings >= 500) {
-            System.out.println("stopped because of total things count: " + totalThings);
-            System.out.println("size was: " +  percent);
-            System.out.println("# hallways: " +  hallsCreated);
-            System.out.println("# rooms: " +  roomsCreated);
-        }
-
-        if ((double) size / (WIDTH * HEIGHT) < 0.35) {
-            System.out.println("didn't stop because of percent, time was: " + timeElapsed.toMillis() / 1000);
-            System.out.println("size was: " +  (double) size / (WIDTH * HEIGHT));
-            System.out.println("# hallways: " +  hallsCreated);
-            System.out.println("# rooms: " +  roomsCreated);
-        }
-        if (timeElapsed.toSeconds()<5) {
-            System.out.println("didn't stop because of time: " + (double) size / (WIDTH * HEIGHT));
-            System.out.println("time was: " + timeElapsed.toMillis() / 1000);
-            System.out.println("# hallways: " +  hallsCreated);
-            System.out.println("# rooms: " +  roomsCreated);
         }
         createWalls();
         return world;
