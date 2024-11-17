@@ -16,6 +16,7 @@ public class Main {
             System.out.println();                          // Move to the next line after each row
         }
     }
+    /*
     public static void main(String[] args) {
         int SEED = 0;
         // build your own world!
@@ -35,5 +36,13 @@ public class Main {
             }
         }
         ter.renderFrame(world);
+    }
+
+     */
+
+    public static void main(String[] args) {
+        WorldTake2 x = new WorldTake2(5);
+        int [][] yippee = x.getWorld();
+        print2DArray(yippee);
     }
 }

@@ -68,7 +68,10 @@ public class World {
     }
 
 
-    private NextOriginNode generateRoom(NextOriginNode node) {
+    private NextOriginNode generateRoom(NextOriginNode node, int numTimes) {
+        if (numTimes > 20) {
+            return generateHallway(node);
+        }
         int roomWidth = generateHorizontalLengths(12) + 2;
         int roomHeight = generateVerticalLengths(12) + 2;
         int x = node.x;
@@ -78,7 +81,10 @@ public class World {
         NextOriginNode finalCoordinates = roomGenerationSelector(roomWidth, roomHeight, x, y, direction);
         int finalX = finalCoordinates.x;
         int finalY = finalCoordinates.y;
-
+        if (finalX == x && finalY == y) {
+            return generateRoom(node, numTimes + 1);
+        }
+        fillRoom(x, y, finalX, finalY);
         int nextXValue = 0;
         int nextYValue = 0;
         int newDirection = generateRandomDirection();
@@ -101,6 +107,21 @@ public class World {
             nextYValue = tempY + random.nextInt(roomHeight);
         }
         return new NextOriginNode(nextXValue, nextYValue, newDirection);
+    }
+
+    private void fillRoom(int startX, int startY, int finalX, int finalY) {
+        int leftX = Math.min(startX, finalX);
+        int rightX = Math.max(startX, finalX);
+        int topY = Math.min(startY, finalY);
+        int bottomY = Math.max(startY, finalY);
+        int countFilled = 0;
+        int area = (rightX - leftX) * (bottomY - topY);
+
+        for (int i = leftX; i < rightX; i++) {
+            for (int j = topY; j < bottomY; j++) {
+                markLocation(i, j, 2);
+            }
+        }
     }
 
     private NextOriginNode roomGenerationSelector(int roomWidth, int roomHeight, int x, int y, int direction) { ///selects which way to generate the room given direction of the previous hallway
@@ -147,7 +168,11 @@ public class World {
                     breaker = true;
                     break;
                 }
-                markLocation(x + i, convertY(y + j), 2);
+                if (world[y+j][x+j] != 0) {tally += 1;}
+                if (tally > 10) {
+                    return new NextOriginNode(x, y, direction);
+                }
+                //markLocation(x + i, convertY(y + j), 2);
                 currX = x+i;
                 currY = y+j;
                 /*
@@ -179,7 +204,10 @@ public class World {
                 if(world[y-j][x+i] != 0) {
                     tally += 1;
                 }
-                markLocation(x + i, convertY(y - j), 2);
+                if (tally > 10) {
+                    return new NextOriginNode(x, y, direction);
+                }
+                //markLocation(x + i, convertY(y - j), 2);
                 currX = x+i;
                 currY = y-j;
                 /*
@@ -212,7 +240,10 @@ public class World {
                 if(world[y+j][x-i] != 0) {
                     tally += 1;
                 }
-                markLocation(x - i, convertY(y + j), 2);
+                if (tally > 10) {
+                    return new NextOriginNode(x, y, direction);
+                }
+                //markLocation(x - i, convertY(y + j), 2);
                 currX = x-i;
                 currY = y+j;
                 /*
@@ -246,7 +277,10 @@ public class World {
                 if(world[x][y] != 0) {
                     tally += 1;
                 }
-                markLocation(newX, newY, 2);
+                if (tally > 10) {
+                    return new NextOriginNode(x, y, direction);
+                }
+                //markLocation(newX, newY, 2);
                 currX = newX;
                 currY = newY;
                 /*
@@ -407,7 +441,7 @@ public class World {
                 //nextCoord = generateHallway(new NextOriginNode(nextCoord.x, nextCoord.y, currDirection % 4));
                 hallsCreated++;
             }
-            nextCoord = generateRoom(nextCoord);
+            nextCoord = generateRoom(nextCoord, 0);
             roomsCreated++;
             nextCoord = generateHallway(nextCoord);
             hallsCreated++;
