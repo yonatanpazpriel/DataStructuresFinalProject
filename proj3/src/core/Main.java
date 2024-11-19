@@ -4,6 +4,9 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
 
 import static core.World2.HEIGHT;
@@ -20,6 +23,9 @@ public class Main {
         }
     }
     public static void main(String[] args) {
+
+
+        /*
         Random random = new Random();
         long SEED = 7647956535394261435l;
 
@@ -42,5 +48,26 @@ public class Main {
             }
         }
         ter.renderFrame(world);
+
+         */
+
+        Frame frame = new Frame("AWT Example");
+        Button button = new Button("Click Me");
+
+        button.addActionListener(e -> System.out.println("Button clicked!"));
+
+        frame.add(button); // Add button to the frame
+        frame.setSize(300, 200); // Set frame size
+        frame.setLayout(new FlowLayout()); // Set layout manager
+        frame.setVisible(true);
+
+        frame.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.dispose();
+            }
+         });
+
     }
+
 }
