@@ -4,8 +4,11 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.util.Random;
+
 import static core.World2.HEIGHT;
 import static core.World2.WIDTH;
+
 
 public class Main {
     public static void print2DArray(int[][] array) {
@@ -17,7 +20,9 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        int SEED = 0;
+        Random random = new Random();
+        long SEED = 7647956535394261435l;
+
         // build your own world!
         World2 x = new World2(SEED);
         int [][] yippee = x.world;//.createWorld();
@@ -27,9 +32,11 @@ public class Main {
         for (int i = 0; i< WIDTH; i++) {
             for (int y = 0; y < HEIGHT; y++) {
                 world[y][i] = Tileset.NOTHING;
-                if (yippee[y][i] == 1 || yippee[y][i] == 2) {
-                    world[y][i] = Tileset.GRASS;
-                } else if (yippee[y][i] == 3) {
+                if (yippee[y][i] == 1) {
+                    world[y][i] = Tileset.CELL;
+                } if (yippee[y][i] == 2) {
+                    world[y][i] = Tileset.CELL;
+                }else if (yippee[y][i] == 3) {
                     world[y][i] = Tileset.WALL;
                 }
             }
