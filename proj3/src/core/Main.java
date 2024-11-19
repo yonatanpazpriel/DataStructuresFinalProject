@@ -23,6 +23,8 @@ public class Main {
         Random random = new Random();
         long SEED = 7647956535394261435l;
 
+        Character nlq = InteractiveMenu.buildAndAcceptNLQ();
+
         // build your own world!
         World2 x = new World2(SEED);
         int [][] yippee = x.world;//.createWorld();
