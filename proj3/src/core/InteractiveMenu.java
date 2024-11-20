@@ -14,12 +14,25 @@ public class InteractiveMenu {
     private static final int WIDTH = World2.WIDTH;
     private static final int HEIGHT = World2.HEIGHT;
     private static int headerY;
+    private Character response;
+
     public static void fill(TETile[][] world, int x, int y, char c) {
         TETile tile = new TETile(c, Color.cyan, Color.black, " ", 0);
         world[x][y] = tile;
     }
 
-    public static void resetScreen(TETile[][] world) {
+    public InteractiveMenu(TETile[][] world) {
+        resetScreen(world);
+        buildHeader(world);
+        buildStartMenu(world);
+    }
+
+    public Character getResponse() {
+        return response;
+    }
+
+
+    private void resetScreen(TETile[][] world) {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 world[x][y] = Tileset.NOTHING;
@@ -27,7 +40,7 @@ public class InteractiveMenu {
         }
     }
 
-    public static void buildHeader(TETile[][] world) {
+    private void buildHeader(TETile[][] world) {
         char[] header = "CS61B: BYOW".toCharArray();
         int x1 = (WIDTH / 2) - header.length / 2;
         headerY = HEIGHT - (HEIGHT / 4);
@@ -37,7 +50,7 @@ public class InteractiveMenu {
         }
     }
 
-    public static void buildStartMenu(TETile[][] world) {
+    private void buildStartMenu(TETile[][] world) {
         buildHeader(world);
         char[] newGame = "(N) New Game".toCharArray();
         int x2 = (WIDTH / 2) - newGame.length / 2;
@@ -67,30 +80,30 @@ public class InteractiveMenu {
         }
     }
 
-    public static Character buildAndAcceptNLQ() {
+    public Character buildAndAcceptNLQ(TETile[][] world) {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
-
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
-        resetScreen(world);
-        buildStartMenu(world);
 
         char c;
         while (true) {
             while (StdDraw.hasNextKeyTyped()) {
                 c = Character.toLowerCase(StdDraw.nextKeyTyped());
+                /*
                 if (c == "n".toCharArray()[0]) {
                     callNew(world);
                 }
+                 */
                 if (c == "l".toCharArray()[0] || c == "n".toCharArray()[0] || c == "q".toCharArray()[0]) {
 
                     return c;
+                } else {
+                    return "Q".toCharArray()[0];
                 }
             }
             ter.renderFrame(world);
         }
     }
-
+    /*
     public static void callNew(TETile[][] world) {
 
         char c;
@@ -109,4 +122,5 @@ public class InteractiveMenu {
             //ter.renderFrame(world);
         }
     }
+     */
 }

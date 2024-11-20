@@ -53,23 +53,12 @@ public class Main {
 
          */
 
-        Frame frame = new Frame("AWT Example");
-        Button button = new Button("Click Me");
-
-        button.addActionListener(e -> System.out.println("Button clicked!"));
-
-        frame.add(button); // Add button to the frame
-        frame.setSize(300, 200); // Set frame size
-        frame.setLayout(new FlowLayout()); // Set layout manager
-        frame.setVisible(true);
-
-        frame.addWindowListener(new WindowAdapter(){
-            @Override
-            public void windowClosing(WindowEvent e) {
-                frame.dispose();
-            }
-         });
-
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        TETile[][] world = new TETile[WIDTH][HEIGHT];
+        InteractiveMenu initialScreen = new InteractiveMenu(world);
+        Character response = initialScreen.buildAndAcceptNLQ(world);
+        System.out.print(response);
     }
 
 }
