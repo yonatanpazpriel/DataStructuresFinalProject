@@ -5,6 +5,8 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.awt.*;
+
 /**
  * This demo shows how to build an interactive game.
  * In this demo, we create a world with 5 squares.
@@ -20,12 +22,17 @@ public class GameLoopDemo {
      * If the tile at position (x,y) is FLOOR, change it to WALL.
      * If the tile at position (x,y) is WALL, change it to FLOOR.
      */
-    public static void toggle(TETile[][] world, int x, int y) {
+    public static void toggle(TETile[][] world, int x, int y, char c) {
+        TETile tile = new TETile(c, Color.cyan, Color.black, " ", 0);
+        world[x][y] = tile;
+        /*
         if (world[x][y].equals(Tileset.FLOOR)) {
             world[x][y] = Tileset.WALL;
         } else if (world[x][y].equals(Tileset.WALL)) {
             world[x][y] = Tileset.FLOOR;
         }
+        */
+
     }
 
     public static void main(String[] args) {
@@ -51,6 +58,7 @@ public class GameLoopDemo {
             // hasNextKeyTyped checks if the user has typed a key that we haven't processed.
             // This loop runs until all unprocessed keys are processed.
             // If there are no unprocessed keys, we go back to the outer infinite loop to wait for the next key.
+            int xIndex = 0;
             while (StdDraw.hasNextKeyTyped()) {
 
                 // nextKeyTyped returns the next key to process.
@@ -60,10 +68,12 @@ public class GameLoopDemo {
 
                 c = Character.toLowerCase(c);
 
+                toggle(world, xIndex, 0, c);
                 // Switch statements can be useful to replace long if-else statements!
+               /*
                 switch (c) {
                     case '1':
-                        toggle(world, 0, 0);
+                        toggle(world, 0, 0, c);
                         break;
                     case '2':
                         toggle(world, 1, 0);
@@ -83,6 +93,8 @@ public class GameLoopDemo {
                     default:
                         break;
                 }
+
+                */
 
             }
 
