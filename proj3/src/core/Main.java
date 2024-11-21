@@ -25,7 +25,6 @@ public class Main {
     }
 
 
-
     public static void main(String[] args) {
 
         TERenderer ter = new TERenderer();
@@ -49,7 +48,10 @@ public class Main {
             String seed = "";
             for (Character digit : seedAcceptor) { seed += digit; }
             long seedLong = Long.parseLong(seed);
-            InteractiveWorld2 game = new InteractiveWorld2(seedLong);
+            World2 tempWorld = new World2(seedLong);
+            world = tempWorld.createWorld();
+            InteractiveWorld2 interactive = new InteractiveWorld2(world);
+            interactive.startPlaying();
         }
 
         else if ( (Character.toLowerCase(response) == "q".toCharArray()[0])) {
