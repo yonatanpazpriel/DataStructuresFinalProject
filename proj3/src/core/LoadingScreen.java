@@ -6,32 +6,20 @@ import tileengine.TETile;
 import tileengine.Tileset;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
-public class InteractiveMenu {
-
+public class LoadingScreen {
     private static final int WIDTH = World2.WIDTH;
     private static final int HEIGHT = World2.HEIGHT;
-    private static int headerY;
+    private int headerY;
     private Character response;
 
-    public static void fill(TETile[][] world, int x, int y, char c) {
-        TETile tile = new TETile(c, Color.cyan, Color.black, " ", 0);
-        world[x][y] = tile;
-    }
-
-    public InteractiveMenu(TETile[][] world) {
+    public LoadingScreen(TETile[][] world) {
+        headerY = 0;
         resetScreen(world);
         buildHeader(world);
         buildStartMenu(world);
     }
-
-    public Character getResponse() {
-        return response;
-    }
-
-
     private void resetScreen(TETile[][] world) {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -39,6 +27,11 @@ public class InteractiveMenu {
             }
         }
     }
+    private void fill(TETile[][] world, int x, int y, char c) {
+        TETile tile = new TETile(c, Color.cyan, Color.black, " ", 0);
+        world[x][y] = tile;
+    }
+
 
     private void buildHeader(TETile[][] world) {
         char[] header = "CS61B: BYOW".toCharArray();
@@ -51,15 +44,16 @@ public class InteractiveMenu {
     }
 
     private void buildStartMenu(TETile[][] world) {
-        char[] newGame = "(N) New Game".toCharArray();
+        char[] newGame = "Enter seed followed by S".toCharArray();
         int x2 = (WIDTH / 2) - newGame.length / 2;
-        int y2 = headerY - 5;
+        int y2 = headerY - 10;
         for (char c : newGame) {
-            TETile currChar = new TETile(c, Color.blue, Color.pink, "CS61B: BYOW", 0);
-            world[x2][y2] = currChar;
+            fill(world, x2, y2, c);
             x2++;
         }
 
+
+        /*
         char[] saveGame = "(L) Load Game".toCharArray();
         int x3 = (WIDTH / 2) - saveGame.length / 2;
         int y3 = y2 - 2;
@@ -77,49 +71,43 @@ public class InteractiveMenu {
             world[x4][y4] = currChar;
             x4++;
         }
+         */
     }
 
-    public Character buildAndAcceptNLQ(TETile[][] world) {
+    public LinkedList<Character> buildAndAcceptSeed(TETile[][] world) {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
+        LinkedList<Character> seed = new LinkedList<>();
+        int x = (WIDTH / 2);
+        int y = headerY - 20;
 
         char c;
         while (true) {
             while (StdDraw.hasNextKeyTyped()) {
-                c = Character.toLowerCase(StdDraw.nextKeyTyped());
+                c = StdDraw.nextKeyTyped();
+
                 /*
                 if (c == "n".toCharArray()[0]) {
                     callNew(world);
                 }
                  */
-                if (c == "l".toCharArray()[0] || c == "n".toCharArray()[0] || c == "q".toCharArray()[0]) {
+                if (Character.isDigit(c) ) {
+                    seed.add(c);
+                    x = (WIDTH)/2 - seed.size()/2;
+                    int xCurr = x;
 
-                    return c;
-                } else {
-                    return "Q".toCharArray()[0];
+                    for (char currNumber: seed) {
+                        fill(world, xCurr, y, currNumber);
+                        xCurr += 1;
+                    }
+                } else if (c == "s".toCharArray()[0] || c == "S".toCharArray()[0]) {
+                    return seed;
+                }
+                else {
+                    return null;
                 }
             }
             ter.renderFrame(world);
         }
     }
-    /*
-    public static void callNew(TETile[][] world) {
-
-        char c;
-        resetScreen(world);
-        buildHeader(world);
-        int x = WIDTH / 2;
-        List<Character> seed = new ArrayList<>();
-        while (true) {
-            while (StdDraw.hasNextKeyTyped()) {
-                c = Character.toLowerCase(StdDraw.nextKeyTyped());
-                if (Character.isDigit(c)) {
-                    seed.add(c);
-                }
-                // keep seed centered ? not necessary lowk
-            }
-            //ter.renderFrame(world);
-        }
-    }
-     */
 }

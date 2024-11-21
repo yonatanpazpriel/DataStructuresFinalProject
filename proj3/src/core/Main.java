@@ -7,6 +7,7 @@ import tileengine.Tileset;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
 import java.util.Random;
 
 import static core.World2.HEIGHT;
@@ -52,13 +53,37 @@ public class Main {
         ter.renderFrame(world);
 
          */
-
+        /*
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         TETile[][] world = new TETile[WIDTH][HEIGHT];
         InteractiveMenu initialScreen = new InteractiveMenu(world);
         Character response = initialScreen.buildAndAcceptNLQ(world);
         System.out.print(response);
+
+         */
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        TETile[][] world = new TETile[WIDTH][HEIGHT];
+        /*
+        Builds initial Screen and stores in RESPONSE
+         */
+        InteractiveMenu initialScreen = new InteractiveMenu(world);
+        Character response = initialScreen.buildAndAcceptNLQ(world);
+        /*
+        uses response to determine actions
+        1. user types n; use loadingscreen object to store and render seed
+        2. user types L. UNIMPLEMENTED
+        3. user type Q. UNIMPLEMENTED
+         */
+
+        if (Character.toLowerCase(response) == "n".toCharArray()[0]) {
+            LoadingScreen secondScreen = new LoadingScreen(world);
+            LinkedList<Character> seed = secondScreen.buildAndAcceptSeed(world);
+            ///System.out.print(seed);
+        }
+
+
     }
 
 }
