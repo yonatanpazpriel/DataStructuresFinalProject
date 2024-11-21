@@ -24,26 +24,6 @@ public class Main {
         }
     }
 
-    public static void createWorld(long longSeed) {
-        World2 x = new World2(longSeed);
-        int [][] yippee = x.world;//.createWorld();
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
-        for (int i = 0; i< WIDTH; i++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                world[y][i] = Tileset.NOTHING;
-                if (yippee[y][i] == 1) {
-                    world[y][i] = Tileset.CELL;
-                } if (yippee[y][i] == 2) {
-                    world[y][i] = Tileset.CELL;
-                }else if (yippee[y][i] == 3) {
-                    world[y][i] = Tileset.WALL;
-                }
-            }
-        }
-        ter.renderFrame(world);
-    }
 
     public static void main(String[] args) {
 
@@ -68,7 +48,8 @@ public class Main {
             String seed = "";
             for (Character digit : seedAcceptor) { seed += digit; }
             long seedLong = Long.parseLong(seed);
-            createWorld(seedLong);
+            World2 tempWorld = new World2(seedLong);
+            world = tempWorld.createWorld();
         }
 
         else if ( (Character.toLowerCase(response) == "q".toCharArray()[0])) {

@@ -1,4 +1,8 @@
 package core;
+import tileengine.TERenderer;
+import tileengine.TETile;
+import tileengine.Tileset;
+
 import java.util.Random;
 import java.time.Instant;
 import java.time.Duration;
@@ -42,7 +46,26 @@ public class World2 {
         eraseDeadEnds();
         createWalls();
         //return world;
-        //createWorld();
+    }
+
+    public TETile[][] createWorld() {
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        TETile[][] worldTiles = new TETile[WIDTH][HEIGHT];
+        for (int i = 0; i< WIDTH; i++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                worldTiles[y][i] = Tileset.NOTHING;
+                if (world[y][i] == 1) {
+                    worldTiles[y][i] = Tileset.CELL;
+                } if (world[y][i] == 2) {
+                    worldTiles[y][i] = Tileset.CELL;
+                }else if (world[y][i] == 3) {
+                    worldTiles[y][i] = Tileset.WALL;
+                }
+            }
+        }
+        ter.renderFrame(worldTiles);
+        return worldTiles;
     }
 
        private int generateHorizontalLengths(int maxSize) {
@@ -375,7 +398,7 @@ public class World2 {
 
 
 
-    ///callsfillRooms first
+    /*
     public int[][] createWorld(){
         Instant start = Instant.now();
         Instant end = Instant.now();
@@ -392,6 +415,8 @@ public class World2 {
         createWalls();
         return world;
     }
+    \
+     */
 
 
 
