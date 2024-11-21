@@ -12,6 +12,7 @@ public class InteractiveWorld2 {
     private TETile[][] world;
     private int currX;
     private int currY;
+    private static InteractiveWorld2 loadWorld;
 
     public InteractiveWorld2(TETile[][] world) {
         this.world = world;
@@ -76,7 +77,11 @@ public class InteractiveWorld2 {
         return world;
     }
 
-    public void startPlaying() {
+    public static void loadWorld() {
+        loadWorld.startPlaying();
+    }
+
+    public InteractiveWorld2 startPlaying() {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         char c;
@@ -102,9 +107,7 @@ public class InteractiveWorld2 {
                         ter.renderFrame(world);
                         break;
                     case 'q':
-                        System.out.println("exiting");
-                        System.exit(0);
-                        break;
+                        return this;
                     default:
                         break;
                 }

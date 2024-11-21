@@ -15,6 +15,8 @@ import static core.World2.WIDTH;
 
 
 public class Main {
+    private static InteractiveWorld2 previousWorld;
+
     public static void print2DArray(int[][] array) {
         for (int i = 0; i < array.length; i++) {          // Iterate over rows
             for (int j = 0; j < array[i].length; j++) {    // Iterate over columns in each row
@@ -51,7 +53,11 @@ public class Main {
             World2 tempWorld = new World2(seedLong);
             world = tempWorld.createWorld();
             InteractiveWorld2 interactive = new InteractiveWorld2(world);
-            interactive.startPlaying();
+            previousWorld = interactive.startPlaying();
+        }
+
+        else if (Character.toLowerCase(response) == "l".toCharArray()[0]) {
+            previousWorld.startPlaying();
         }
 
         else if ( (Character.toLowerCase(response) == "q".toCharArray()[0])) {
