@@ -31,7 +31,6 @@ public class InteractiveMenu {
         return response;
     }
 
-
     private void resetScreen(TETile[][] world) {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
@@ -95,8 +94,6 @@ public class InteractiveMenu {
                 if (c == "l".toCharArray()[0] || c == "n".toCharArray()[0] || c == "q".toCharArray()[0]) {
 
                     return c;
-                } else {
-                    return "Q".toCharArray()[0];
                 }
             }
             ter.renderFrame(world);

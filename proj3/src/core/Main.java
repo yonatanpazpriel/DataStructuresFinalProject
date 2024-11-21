@@ -23,17 +23,9 @@ public class Main {
             System.out.println();                          // Move to the next line after each row
         }
     }
-    public static void main(String[] args) {
 
-
-        /*
-        Random random = new Random();
-        long SEED = 7647956535394261435l;
-
-        Character nlq = InteractiveMenu.buildAndAcceptNLQ();
-
-        // build your own world!
-        World2 x = new World2(SEED);
+    public static void createWorld(long longSeed) {
+        World2 x = new World2(longSeed);
         int [][] yippee = x.world;//.createWorld();
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
@@ -51,36 +43,36 @@ public class Main {
             }
         }
         ter.renderFrame(world);
+    }
 
-         */
-        /*
+    public static void main(String[] args) {
+
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         TETile[][] world = new TETile[WIDTH][HEIGHT];
-        InteractiveMenu initialScreen = new InteractiveMenu(world);
-        Character response = initialScreen.buildAndAcceptNLQ(world);
-        System.out.print(response);
 
-         */
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
-        /*
-        Builds initial Screen and stores in RESPONSE
-         */
+        //Builds initial Screen and stores in RESPONSE
         InteractiveMenu initialScreen = new InteractiveMenu(world);
         Character response = initialScreen.buildAndAcceptNLQ(world);
+
         /*
         uses response to determine actions
-        1. user types n; use loadingscreen object to store and render seed
+        1. user types n; use loadingscreen object to store and render seed. displays world.
         2. user types L. UNIMPLEMENTED
-        3. user type Q. UNIMPLEMENTED
+        3. user type Q. Quits program, closes windows
          */
 
         if (Character.toLowerCase(response) == "n".toCharArray()[0]) {
             LoadingScreen secondScreen = new LoadingScreen(world);
-            LinkedList<Character> seed = secondScreen.buildAndAcceptSeed(world);
-            ///System.out.print(seed);
+            LinkedList<Character> seedAcceptor = secondScreen.buildAndAcceptSeed(world);
+            String seed = "";
+            for (Character digit : seedAcceptor) { seed += digit; }
+            long seedLong = Long.parseLong(seed);
+            createWorld(seedLong);
+        }
+
+        else if ( (Character.toLowerCase(response) == "q".toCharArray()[0])) {
+            System.exit(0);
         }
 
 

@@ -44,10 +44,10 @@ public class LoadingScreen {
     }
 
     private void buildStartMenu(TETile[][] world) {
-        char[] newGame = "Enter seed followed by S".toCharArray();
-        int x2 = (WIDTH / 2) - newGame.length / 2;
+        char[] seedRequest = "Enter seed followed by 'S'".toCharArray();
+        int x2 = (WIDTH / 2) - seedRequest.length / 2;
         int y2 = headerY - 10;
-        for (char c : newGame) {
+        for (char c : seedRequest) {
             fill(world, x2, y2, c);
             x2++;
         }
@@ -102,9 +102,8 @@ public class LoadingScreen {
                     }
                 } else if (c == "s".toCharArray()[0] || c == "S".toCharArray()[0]) {
                     return seed;
-                }
-                else {
-                    return null;
+                } else if (c == "q".toCharArray()[0] || c == "Q".toCharArray()[0]) {
+                    System.exit(0);
                 }
             }
             ter.renderFrame(world);
