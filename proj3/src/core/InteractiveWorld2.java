@@ -10,19 +10,19 @@ public class InteractiveWorld2 {
     private static final int WIDTH = World2.WIDTH;
     private static final int HEIGHT = World2.HEIGHT;
     private TETile[][] world;
-    private int startX;
-    private int startY;
+    private int currX;
+    private int currY;
 
-    public InteractiveWorld2(long seed) {
-        world = createWorld(seed);
+    public InteractiveWorld2(TETile[][] world) {
+        this.world = world;
         boolean breaker = true;
         for (int x = 0; x < WIDTH && breaker; x++) {
             for (int y = 0; y < HEIGHT && breaker; y++) {
                 if (world[x][y] == Tileset.CELL) {
-                    startX = x;
-                    startY = y;
-                    world[startX][startY] = Tileset.AVATAR;
-                    System.out.println("Avatar @: (" + startX + ", " + startY + ")");
+                    currX = x;
+                    currY = y;
+                    world[currX][currY] = Tileset.AVATAR;
+                    System.out.println("Avatar @: (" + currX + ", " + currY + ")");
                     breaker = false;
                     break;
                 }
@@ -31,7 +31,6 @@ public class InteractiveWorld2 {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         ter.renderFrame(world);
-
     }
 
     public static void fill(TETile[][] world, int x, int y, char c) {
@@ -76,6 +75,76 @@ public class InteractiveWorld2 {
         ter.renderFrame(world);
         return world;
     }
+
+    public void startPlaying() {
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        char c;
+        while (true) {
+            while (StdDraw.hasNextKeyTyped()) {
+                c = StdDraw.nextKeyTyped();
+                switch (c) {
+                    case 'w':
+                        moveUp(currX, currY);
+                        System.out.println("move up");
+                        ter.renderFrame(world);
+                        break;
+                    case 'a':
+                        moveLeft(currX, currY);
+                        ter.renderFrame(world);
+                        break;
+                    case 's':
+                        moveDown(currX, currY);
+                        ter.renderFrame(world);
+                        break;
+                    case 'd':
+                        moveRight(currX, currY);
+                        ter.renderFrame(world);
+                        break;
+                    case 'q':
+                        System.out.println("exiting");
+                        System.exit(0);
+                        break;
+                    default:
+                        break;
+                }
+
+        }
+        ter.renderFrame(world);
     }
+
+    }
+
+    private void moveUp(int currX, int currY) {
+        if (world[currX][currY + 1] == Tileset.CELL) {
+            world[currX][currY + 1] =  Tileset.AVATAR;
+            world[currX][currY] = Tileset.CELL;
+            this.currY++;
+        }
+    }
+
+    private void moveDown(int currX, int currY) {
+        if (world[currX][currY - 1] == Tileset.CELL) {
+            world[currX][currY - 1] = Tileset.AVATAR;
+            world[currX][currY] = Tileset.CELL;
+            this.currY--;
+        }
+    }
+    private void moveRight(int currX, int currY) {
+        if (world[currX + 1][currY] == Tileset.CELL) {
+            world[currX + 1][currY] = Tileset.AVATAR;
+            world[currX][currY] = Tileset.CELL;
+            this.currX++;
+        }
+    }
+    private void moveLeft(int currX, int currY) {
+        if (world[currX - 1][currY] == Tileset.CELL) {
+            world[currX - 1][currY] = Tileset.AVATAR;
+            world[currX][currY] = Tileset.CELL;
+            this.currX--;
+        }
+    }
+}
+
 
 
