@@ -68,7 +68,7 @@ public class World2 {
         return worldTiles;
     }
 
-       private int generateHorizontalLengths(int maxSize) {
+    private int generateHorizontalLengths(int maxSize) {
         return random.nextInt(maxSize);
     }
 
