@@ -7,7 +7,6 @@ import tileengine.Tileset;
 import java.awt .*;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class InteractiveWorld2 {
     private static final int WIDTH = World2.WIDTH;
@@ -15,7 +14,14 @@ public class InteractiveWorld2 {
     private TETile[][] world;
     private int currX;
     private int currY;
-    private static InteractiveWorld2 loadWorld;
+
+    public InteractiveWorld2(TETile[][] world, int startX, int startY) {
+        this.world = world;
+        currX = startX;
+        currY = startY;
+        world[currX][currY] = Tileset.AVATAR;
+        System.out.println("Avatar @: (" + currX + ", " + currY + ")");
+    }
 
     public InteractiveWorld2(TETile[][] world) {
         this.world = world;
@@ -78,10 +84,6 @@ public class InteractiveWorld2 {
         }
         ter.renderFrame(world);
         return world;
-    }
-
-    public static void loadWorld() {
-        loadWorld.startPlaying();
     }
 
     public InteractiveWorld2 startPlaying() {

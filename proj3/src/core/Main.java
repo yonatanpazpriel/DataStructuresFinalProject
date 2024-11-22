@@ -7,6 +7,9 @@ import tileengine.Tileset;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -27,7 +30,7 @@ public class Main {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
@@ -57,14 +60,51 @@ public class Main {
         }
 
         else if (Character.toLowerCase(response) == "l".toCharArray()[0]) {
-            previousWorld.startPlaying();
+            // fileLoader returns InteractiveWorld object reconstructed from savedWorld.txt
+            fileLoader().startPlaying();
         }
-
         else if ( (Character.toLowerCase(response) == "q".toCharArray()[0])) {
             System.exit(0);
         }
+    }
 
+    private static InteractiveWorld2 fileLoader() throws Exception {
+        String filePath = "savedWorld.txt";
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            int avatarX = 0;
+            int avatarY = 0;
+            String[] lines = reader.lines().toArray(String[]::new);
+
+            // Step 2: Create a 2D array
+            int rows = lines.length;
+            int cols = lines[0].length(); // Assuming all rows have the same length
+            TETile[][] reconstructedWorld = new TETile[rows][cols];
+            char[][] charGrid = new char[rows][cols];
+            // Step 3: Fill the 2D array
+            for (int i = 0; i < rows; i++) {
+                charGrid[i] = lines[i].toCharArray();
+                int x = 0;
+                for (char c : charGrid[i]) {
+                    if (c == "#".toCharArray()[0]) {
+                        reconstructedWorld[i][x] = Tileset.WALL;
+                    } else if (c == "█".toCharArray()[0]) {
+                        reconstructedWorld[i][x] = Tileset.CELL;
+                    } else if (c == " ".toCharArray()[0]) {
+                        reconstructedWorld[i][x] = Tileset.NOTHING;
+                    } else if (c == "@".toCharArray()[0]) {
+                        avatarX = x;
+                        avatarY = i;
+                        reconstructedWorld[i][x] = Tileset.CELL;
+                    }
+                    x++;
+                }
+            }
+            return new InteractiveWorld2(reconstructedWorld, avatarX, avatarY);
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        throw new Exception("No world loaded.");
     }
 
 }
