@@ -70,22 +70,22 @@ public class GameLoopDemo {
 
                 toggle(world, xIndex, 0, c);
                 // Switch statements can be useful to replace long if-else statements!
-               /*
+
                 switch (c) {
                     case '1':
                         toggle(world, 0, 0, c);
                         break;
                     case '2':
-                        toggle(world, 1, 0);
+                        toggle(world, 1, 0,c);
                         break;
                     case '3':
-                        toggle(world, 2, 0);
+                        toggle(world, 2, 0,c);
                         break;
                     case '4':
-                        toggle(world, 3, 0);
+                        toggle(world, 3, 0,c);
                         break;
                     case '5':
-                        toggle(world, 4, 0);
+                        toggle(world, 4, 0,c);
                         break;
                     case 'q':
                         System.exit(0); // Closes the game window and quits the game.
@@ -94,7 +94,7 @@ public class GameLoopDemo {
                         break;
                 }
 
-                */
+
 
             }
 
