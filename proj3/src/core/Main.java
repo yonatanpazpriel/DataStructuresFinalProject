@@ -93,8 +93,9 @@ public class Main {
                     } else if (c == " ".toCharArray()[0]) {
                         reconstructedWorld[i][x] = Tileset.NOTHING;
                     } else if (c == "@".toCharArray()[0]) {
-                        avatarX = x;
-                        avatarY = i;
+                        avatarX = i;
+                        avatarY = x;
+                        System.out.println("Avatar " + avatarX + ", " + avatarY);
                         reconstructedWorld[i][x] = Tileset.CELL;
                     }
                     x++;

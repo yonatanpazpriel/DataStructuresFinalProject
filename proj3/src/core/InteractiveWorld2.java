@@ -17,10 +17,13 @@ public class InteractiveWorld2 {
 
     public InteractiveWorld2(TETile[][] world, int startX, int startY) {
         this.world = world;
-        currX = startX;
-        currY = startY;
+        this.currX = startX;
+        this.currY = startY;
         world[currX][currY] = Tileset.AVATAR;
         System.out.println("Avatar @: (" + currX + ", " + currY + ")");
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+        ter.renderFrame(world);
     }
 
     public InteractiveWorld2(TETile[][] world) {
