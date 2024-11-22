@@ -5,6 +5,9 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 import java.awt .*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class InteractiveWorld2 {
     private static final int WIDTH = World2.WIDTH;
@@ -107,7 +110,9 @@ public class InteractiveWorld2 {
                         ter.renderFrame(world);
                         break;
                     case 'q':
-                        return this;
+                        String toSave = worldToString(world);
+                        saveToFile(toSave);
+                        System.exit(0);
                     default:
                         break;
                 }
@@ -116,6 +121,17 @@ public class InteractiveWorld2 {
         ter.renderFrame(world);
     }
 
+    }
+
+    private String worldToString(TETile[][] world) {
+        String s = "";
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                s = s + world[x][y].character();
+            }
+            s += "\n";
+        }
+        return s;
     }
 
     private void moveUp(int currX, int currY) {
@@ -147,6 +163,18 @@ public class InteractiveWorld2 {
             this.currX--;
         }
     }
+
+
+
+    private static void saveToFile(String data) {
+        try (FileWriter writer = new FileWriter("savedWorld.txt")) {
+            System.out.println("Saving file");
+            writer.write(data);
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
 }
 
 
