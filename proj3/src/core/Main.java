@@ -76,12 +76,11 @@ public class Main {
             int avatarY = 0;
             String[] lines = reader.lines().toArray(String[]::new);
 
-            // Step 2: Create a 2D array
+
             int rows = lines.length;
             int cols = lines[0].length(); // Assuming all rows have the same length
             TETile[][] reconstructedWorld = new TETile[rows][cols];
             char[][] charGrid = new char[rows][cols];
-            // Step 3: Fill the 2D array
             for (int i = 0; i < rows; i++) {
                 charGrid[i] = lines[i].toCharArray();
                 int x = 0;

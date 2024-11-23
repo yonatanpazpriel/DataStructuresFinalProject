@@ -184,7 +184,6 @@ public class InteractiveWorld2 {
             world[currX][currY] = Tileset.CELL;
             this.currY++;
         } else if (world[currX][currY + 1] == Tileset.GRASS) {
-            generateSmallTask();
             world[currX][currY + 1] =  Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY++;
@@ -196,11 +195,11 @@ public class InteractiveWorld2 {
             world[currX][currY - 1] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY--;
-        } else if (world[currX][currY - 1] == Tileset.CELL) {
-            generateSmallTask();
+        } else if (world[currX][currY - 1] == Tileset.GRASS) {
             world[currX][currY - 1] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY--;
+
         }
     }
     private void moveRight(int currX, int currY) {
@@ -208,8 +207,7 @@ public class InteractiveWorld2 {
             world[currX + 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX++;
-        } else if  (world[currX + 1][currY] == Tileset.CELL) {
-            generateSmallTask();
+        } else if  (world[currX + 1][currY] == Tileset.GRASS) {
             world[currX + 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX++;
@@ -220,16 +218,12 @@ public class InteractiveWorld2 {
             world[currX - 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX--;
-        } else if (world[currX - 1][currY] == Tileset.CELL) {
-            generateSmallTask();
+        } else if (world[currX - 1][currY] == Tileset.GRASS) {
             world[currX - 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX--;
         }
     }
-
-
-
     private static void saveToFile(String data) {
         try (FileWriter writer = new FileWriter("savedWorld.txt")) {
             System.out.println("Saving file");
