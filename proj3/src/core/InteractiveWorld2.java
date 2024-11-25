@@ -184,6 +184,7 @@ public class InteractiveWorld2 {
             world[currX][currY] = Tileset.CELL;
             this.currY++;
         } else if (world[currX][currY + 1] == Tileset.GRASS) {
+            SmallWorld curr = new SmallWorld(this);
             world[currX][currY + 1] =  Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY++;
