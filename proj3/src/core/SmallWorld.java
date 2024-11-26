@@ -18,7 +18,6 @@ public class SmallWorld {
     private int currX = 0;
     private int currY = 0;
     private int amountCoinsLeft = 0;
-    private InteractiveWorld2 previousWorld;
     public SmallWorld(TETile[][] world) {
         this.world = world;
         this.random = new Random(WIDTH);
@@ -138,10 +137,33 @@ public class SmallWorld {
                     saveToFile(toSave);
                     System.exit(0);
                 } if(this.amountCoinsLeft == 0) {
+                    TETile[][] victory = victoryScreen();
+                    boolean keyPressed = false;
+                    while (!keyPressed) {
+                        ter.renderFrame(victory);
+                        if (StdDraw.hasNextKeyTyped()) {
+                            keyPressed = true;
+                            long time = System.currentTimeMillis();
+                            while (System.currentTimeMillis() - time < 1000) {
+                                ter.renderFrame(victory);
+                            }
+                        }
+                    }
                     return;
+
                 } if(System.currentTimeMillis() - startTime >= 10000){
                     TETile[][] failure = failureScreen();
-                    ter.renderFrame(failure);
+                    boolean keyPressed = false;
+                    while (!keyPressed) {
+                        ter.renderFrame(failure);
+                        if (StdDraw.hasNextKeyTyped()) {
+                            keyPressed = true;
+                            long time = System.currentTimeMillis();
+                            while (System.currentTimeMillis() - time < 1000) {
+                                ter.renderFrame(failure);
+                            }
+                        }
+                    }
                     return;
                 }
 
@@ -149,6 +171,31 @@ public class SmallWorld {
             ter.renderFrame(world);
         }
 
+    }
+
+    private TETile[][] victoryScreen() {
+        TETile[][] victoryScreen = new TETile[WIDTH][HEIGHT];
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < WIDTH; j++) {
+                victoryScreen[i][j] = Tileset.NOTHING;
+            }
+        }
+        char[] header = "You win!".toCharArray();
+        int x1 = (WIDTH / 2) - header.length / 2;
+        int headerY = HEIGHT / 2 + 2;
+        for (char c : header) {
+            fill(victoryScreen, x1, headerY, c);
+            x1++;
+        }
+        header = "Press any key to return to main world.".toCharArray();
+        int x2 = (WIDTH / 2) - header.length / 2;
+        headerY = headerY - 4;
+        for (char f : header) {
+            fill(victoryScreen, x2, headerY + 1, f);
+            x2++;
+        }
+
+        return victoryScreen;
     }
 
     private TETile[][] failureScreen(){
@@ -159,13 +206,22 @@ public class SmallWorld {
             }
         }
 
-        char[] header = "Good game bro".toCharArray();
+
+        char[] header = "You lose!".toCharArray();
         int x1 = (WIDTH / 2) - header.length / 2;
-        int headerY = HEIGHT - (HEIGHT / 4) + 3;
+        int headerY = HEIGHT / 2 + 2;
         for (char c : header) {
-            fill(this.world, x1, headerY, c);
+            fill(failureScreen, x1, headerY, c);
             x1++;
         }
+        header = "Press any key to return to main world.".toCharArray();
+        int x2 = (WIDTH / 2) - header.length / 2;
+        headerY = headerY - 4;
+        for (char f : header) {
+            fill(failureScreen, x2, headerY + 1, f);
+            x2++;
+        }
+
         return failureScreen;
     }
 
