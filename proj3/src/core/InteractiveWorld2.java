@@ -17,9 +17,11 @@ public class InteractiveWorld2 {
     private int currY;
     private static Random random;
     private static Random charactersAmount;
+    private SmallWorld smallworld;
 
     public InteractiveWorld2(TETile[][] world, int startX, int startY) {
         this.world = world;
+        smallworld = new SmallWorld(new TETile[40][40]);
         this.currX = startX;
         this.currY = startY;
         world[currX][currY] = Tileset.AVATAR;
@@ -31,6 +33,7 @@ public class InteractiveWorld2 {
 
     public InteractiveWorld2(TETile[][] world) {
         random = new Random(WIDTH);
+        smallworld = new SmallWorld(new TETile[40][40]);
         charactersAmount = new Random(15);
         this.world = world;
         createAvatar();
@@ -184,7 +187,7 @@ public class InteractiveWorld2 {
             world[currX][currY] = Tileset.CELL;
             this.currY++;
         } else if (world[currX][currY + 1] == Tileset.GRASS) {
-            SmallWorld curr = new SmallWorld(this);
+            smallworld.play();
             world[currX][currY + 1] =  Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY++;
@@ -197,6 +200,7 @@ public class InteractiveWorld2 {
             world[currX][currY] = Tileset.CELL;
             this.currY--;
         } else if (world[currX][currY - 1] == Tileset.GRASS) {
+            smallworld.play();
             world[currX][currY - 1] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY--;
@@ -209,6 +213,7 @@ public class InteractiveWorld2 {
             world[currX][currY] = Tileset.CELL;
             this.currX++;
         } else if  (world[currX + 1][currY] == Tileset.GRASS) {
+            smallworld.play();
             world[currX + 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX++;
@@ -220,6 +225,7 @@ public class InteractiveWorld2 {
             world[currX][currY] = Tileset.CELL;
             this.currX--;
         } else if (world[currX - 1][currY] == Tileset.GRASS) {
+            smallworld.play();
             world[currX - 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX--;

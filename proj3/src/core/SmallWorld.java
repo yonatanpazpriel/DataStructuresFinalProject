@@ -4,43 +4,37 @@ import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
-import static core.World2.HEIGHT;
-import static core.World2.WIDTH;
+
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
 public class SmallWorld {
-
+    private static final int WIDTH = 40;
+    private static final int HEIGHT = 40;
     private TETile[][] world;
     private Random random;
     private int currX = 0;
     private int currY = 0;
     private int amountCoinsLeft = 0;
     private InteractiveWorld2 previousWorld;
-    public SmallWorld(InteractiveWorld2 previousWorld) {
-        this.previousWorld = previousWorld;
-        this.world = new TETile[HEIGHT][WIDTH];
+    public SmallWorld(TETile[][] world) {
+        this.world = world;
         this.random = new Random(WIDTH);
-        resetScreen();
-        buildHeader();
-        createAvatar();
-        addCoins();
-        play();
+
     }
 
     private void resetScreen() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                this.world[y][x] = Tileset.NOTHING;
-                this.world[y][x] = Tileset.CELL;
+                this.world[x][y] = Tileset.NOTHING;
             }
         }
     }
 
     private void buildHeader() {
-        char[] header = "You have 10s to chop trees.".toCharArray();
+        char[] header = ".".toCharArray();
         int x1 = (WIDTH / 2) - header.length / 2;
         int headerY = HEIGHT - (HEIGHT / 4);
         for (char c : header) {
@@ -49,18 +43,26 @@ public class SmallWorld {
         }
     }
 
+    private void fillScreen() {
+        for (int x = 10; x < 30; x++) {
+            for (int y = 10; y < 30d; y++) {
+                this.world[x][y] = Tileset.CELL;
+            }
+        }
+    }
+
     private void addCoins() {
-        int amount = 8;
-        int i = 0;
+        int amount = 4;
+        int i = 1;
         while (i <= amount) {
             int currX = generateHorizontalLengths();
             int currY = generateVerticalLengths();
-            if (world[currY][currX] != Tileset.TREE && world[currY][currX] != Tileset.AVATAR) {
-                world[currY][currX] = Tileset.TREE;
-                i--;
+            if (world[currX][currY] == Tileset.CELL) {
+                world[currX][currY] = Tileset.TREE;
+                i++;
             }
         }
-        this.amountCoinsLeft = 8;
+        this.amountCoinsLeft = 4;
     }
 
     private void createAvatar() {
@@ -89,13 +91,17 @@ public class SmallWorld {
 
     private void fill(TETile[][] world, int x, int y, char c) {
         TETile tile = new TETile(c, Color.cyan, Color.black, " ", 0);
-        world[y][x] = tile;
+        world[x][y] = tile;
     }
 
 
 
     public void play() {
-
+        resetScreen();
+        //buildHeader();
+        fillScreen();
+        createAvatar();
+        addCoins();
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         char c;
@@ -164,7 +170,7 @@ public class SmallWorld {
                 world[currX][currY + 1] = Tileset.AVATAR;
                 world[currX][currY] = Tileset.CELL;
                 this.currY++;
-            } else if (world[currX][currY + 1] == Tileset.GRASS) {
+            } else if (world[currX][currY + 1] == Tileset.TREE) {
                 world[currX][currY + 1] = Tileset.AVATAR;
                 world[currX][currY] = Tileset.CELL;
                 this.currY++;
@@ -178,7 +184,7 @@ public class SmallWorld {
             world[currX][currY - 1] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY--;
-        } else if (world[currX][currY - 1] == Tileset.GRASS) {
+        } else if (world[currX][currY - 1] == Tileset.TREE) {
             world[currX][currY - 1] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currY--;
@@ -190,7 +196,7 @@ public class SmallWorld {
             world[currX + 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX++;
-        } else if  (world[currX + 1][currY] == Tileset.GRASS) {
+        } else if  (world[currX + 1][currY] == Tileset.TREE) {
             world[currX + 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX++;
@@ -202,7 +208,7 @@ public class SmallWorld {
             world[currX - 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX--;
-        } else if (world[currX - 1][currY] == Tileset.GRASS) {
+        } else if (world[currX - 1][currY] == Tileset.TREE) {
             world[currX - 1][currY] = Tileset.AVATAR;
             world[currX][currY] = Tileset.CELL;
             this.currX--;

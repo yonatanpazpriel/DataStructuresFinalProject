@@ -32,6 +32,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         TETile[][] world = new TETile[WIDTH][HEIGHT];
@@ -46,6 +47,7 @@ public class Main {
         2. user types L. UNIMPLEMENTED
         3. user type Q. Quits program, closes windows
          */
+
 
         if (Character.toLowerCase(response) == "n".toCharArray()[0]) {
             LoadingScreen secondScreen = new LoadingScreen(world);
@@ -66,6 +68,8 @@ public class Main {
         else if ( (Character.toLowerCase(response) == "q".toCharArray()[0])) {
             System.exit(0);
         }
+
+
     }
 
     private static InteractiveWorld2 fileLoader() throws Exception {
