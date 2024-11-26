@@ -100,7 +100,7 @@ public class LoadingScreen {
                         fill(world, xCurr, y, currNumber);
                         xCurr += 1;
                     }
-                } else if (c == "s".toCharArray()[0] || c == "S".toCharArray()[0]) {
+                } else if (!seed.isEmpty() && c == "s".toCharArray()[0] || c == "S".toCharArray()[0]) {
                     return seed;
                 } else if (c == "q".toCharArray()[0] || c == "Q".toCharArray()[0]) {
                     System.exit(0);

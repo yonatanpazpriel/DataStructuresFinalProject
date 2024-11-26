@@ -144,7 +144,7 @@ public class SmallWorld {
                         if (StdDraw.hasNextKeyTyped()) {
                             keyPressed = true;
                             long time = System.currentTimeMillis();
-                            while (System.currentTimeMillis() - time < 1000) {
+                            while (System.currentTimeMillis() - time < 2000) {
                                 ter.renderFrame(victory);
                             }
                         }
@@ -159,7 +159,7 @@ public class SmallWorld {
                         if (StdDraw.hasNextKeyTyped()) {
                             keyPressed = true;
                             long time = System.currentTimeMillis();
-                            while (System.currentTimeMillis() - time < 1000) {
+                            while (System.currentTimeMillis() - time < 2000) {
                                 ter.renderFrame(failure);
                             }
                         }
