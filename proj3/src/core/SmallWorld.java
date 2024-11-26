@@ -138,30 +138,36 @@ public class SmallWorld {
                     System.exit(0);
                 } if(this.amountCoinsLeft == 0) {
                     TETile[][] victory = victoryScreen();
+                    long time = System.currentTimeMillis();
+                    while (System.currentTimeMillis() - time < 1000) {
+                        ter.renderFrame(victory);
+                    }
+                    while (StdDraw.hasNextKeyTyped()) {
+                        StdDraw.nextKeyTyped();
+                    }
                     boolean keyPressed = false;
                     while (!keyPressed) {
                         ter.renderFrame(victory);
                         if (StdDraw.hasNextKeyTyped()) {
                             keyPressed = true;
-                            long time = System.currentTimeMillis();
-                            while (System.currentTimeMillis() - time < 2000) {
-                                ter.renderFrame(victory);
-                            }
                         }
                     }
                     return;
 
                 } if(System.currentTimeMillis() - startTime >= 10000){
+                    long time = System.currentTimeMillis();
                     TETile[][] failure = failureScreen();
+                    while (System.currentTimeMillis() - time < 1000) {
+                        ter.renderFrame(failure);
+                    }
+                    while (StdDraw.hasNextKeyTyped()) {
+                        StdDraw.nextKeyTyped();
+                    }
                     boolean keyPressed = false;
                     while (!keyPressed) {
                         ter.renderFrame(failure);
                         if (StdDraw.hasNextKeyTyped()) {
                             keyPressed = true;
-                            long time = System.currentTimeMillis();
-                            while (System.currentTimeMillis() - time < 2000) {
-                                ter.renderFrame(failure);
-                            }
                         }
                     }
                     return;
