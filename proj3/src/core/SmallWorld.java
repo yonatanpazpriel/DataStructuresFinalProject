@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.Random;
 
 public class SmallWorld {
-    private static final int WIDTH = 40;
-    private static final int HEIGHT = 40;
+    private static final int WIDTH = World2.WIDTH;
+    private static final int HEIGHT = World2.HEIGHT;
     private TETile[][] world;
     private Random random;
     private int currX = 0;

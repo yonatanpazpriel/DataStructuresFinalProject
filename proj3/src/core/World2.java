@@ -13,8 +13,8 @@ public class World2 {
     // hallway obj
     // world initializer
 
-    public static final int WIDTH = 40;
-    public static final int HEIGHT = 40;
+    public static final int WIDTH = 47;
+    public static final int HEIGHT = 47;
     private static Random random;
 
 
@@ -35,7 +35,7 @@ public class World2 {
         previousHallwayDirection = 0;
         NextOriginNode nextCoord = new NextOriginNode(random.nextInt(WIDTH/4) + WIDTH/4, random.nextInt(HEIGHT/4) + HEIGHT/4, 0);
         int count = 0;
-        while (size < .35*WIDTH*HEIGHT ){//&& size < 0.4 * WIDTH * HEIGHT&& timeElapsed.toMillis()<10000) {
+        while (size < .32*WIDTH*HEIGHT ){//&& size < 0.4 * WIDTH * HEIGHT&& timeElapsed.toMillis()<10000) {
             count++;
             nextCoord = generateRoom(nextCoord);
             nextCoord = generateHallway(nextCoord);
@@ -91,8 +91,8 @@ public class World2 {
     }
 
     private NextOriginNode generateRoom(NextOriginNode node) {
-        int roomWidth = generateHorizontalLengths(6) + 2;
-        int roomHeight = generateVerticalLengths(6) + 2;
+        int roomWidth = generateHorizontalLengths(5) + 2;
+        int roomHeight = generateVerticalLengths(5) + 2;
         int x = node.x;
         int y = node.y;
         int direction = node.direction;
@@ -296,7 +296,7 @@ public class World2 {
     ///creates hallways along the height of the world!
     private NextOriginNode generateVerticalHallway(int x, int y, int direction){
         ///generates hallway toward 'direction' starting at (x,y)
-        int currHeight = generateVerticalLengths(15);
+        int currHeight = generateVerticalLengths(11) + 2;
         return generateVerticalHallwayHelper(y, currHeight, x, direction);
     }
 
@@ -326,7 +326,7 @@ public class World2 {
     ///creates hallways along the width of the world!
     private NextOriginNode generateHorizontalHallway(int x, int y, int direction) {
         ///generates hallway toward 'direction' starting at (x,y)
-        int currLength = generateHorizontalLengths(15);
+        int currLength = generateHorizontalLengths(11) + 2;
         return generateHorizontalHallwayHelper(x, currLength, y, direction);
     }
 
