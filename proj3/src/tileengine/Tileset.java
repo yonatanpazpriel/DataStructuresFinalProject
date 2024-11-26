@@ -17,12 +17,12 @@ import java.awt.Color;
  */
 
 public class Tileset {
-    public static final TETile AVATAR = new TETile('@', Color.white, Color.black, "you", 0);
+    public static final TETile AVATAR = new TETile('@', Color.red, Color.white, "you", 0);
     public static final TETile WALL = new TETile('#', new Color(216, 128, 128), Color.darkGray,
             "wall", 1);
     public static final TETile FLOOR = new TETile('·', new Color(128, 192, 128), Color.black, "floor", 2);
     public static final TETile NOTHING = new TETile(' ', Color.black, Color.black, "nothing", 3);
-    public static final TETile GRASS = new TETile('"', Color.green, Color.black, "grass", 4);
+    public static final TETile GRASS = new TETile('"', Color.cyan, Color.black, "grass", 4);
     public static final TETile WATER = new TETile('≈', Color.blue, Color.black, "water", 5);
     public static final TETile FLOWER = new TETile('❀', Color.magenta, Color.pink, "flower", 6);
     public static final TETile LOCKED_DOOR = new TETile('█', Color.orange, Color.black,

@@ -43,7 +43,7 @@ public class Main {
         /*
         uses response to determine actions
         1. user types n; use loadingscreen object to store and render seed. displays world.
-        2. user types L. UNIMPLEMENTED
+        2. user types L. loads most recent world from savedWorld.txt
         3. user type Q. Quits program, closes windows
          */
 
@@ -97,7 +97,11 @@ public class Main {
                         avatarY = x;
                         System.out.println("Avatar " + avatarX + ", " + avatarY);
                         reconstructedWorld[i][x] = Tileset.CELL;
+                    } else if (c == '"') {
+                        reconstructedWorld[i][x] = Tileset.GRASS;
+
                     }
+
                     x++;
                 }
             }
