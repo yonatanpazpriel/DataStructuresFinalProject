@@ -44,7 +44,7 @@ public class Main {
         /*
         uses response to determine actions
         1. user types n; use loadingscreen object to store and render seed. displays world.
-        2. user types L. UNIMPLEMENTED
+        2. user types L. loads most recent world from savedWorld.txt
         3. user type Q. Quits program, closes windows
          */
 
@@ -80,11 +80,12 @@ public class Main {
             int avatarY = 0;
             String[] lines = reader.lines().toArray(String[]::new);
 
-
+            // Step 2: Create a 2D array
             int rows = lines.length;
             int cols = lines[0].length(); // Assuming all rows have the same length
             TETile[][] reconstructedWorld = new TETile[rows][cols];
             char[][] charGrid = new char[rows][cols];
+            // Step 3: Fill the 2D array
             for (int i = 0; i < rows; i++) {
                 charGrid[i] = lines[i].toCharArray();
                 int x = 0;
@@ -100,7 +101,11 @@ public class Main {
                         avatarY = x;
                         System.out.println("Avatar " + avatarX + ", " + avatarY);
                         reconstructedWorld[i][x] = Tileset.CELL;
+                    } else if (c == '"') {
+                        reconstructedWorld[i][x] = Tileset.GRASS;
+
                     }
+
                     x++;
                 }
             }

@@ -3,6 +3,8 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import static java.lang.Character.isDigit;
+
 public class AutograderBuddy {
 
     /**
@@ -19,9 +21,30 @@ public class AutograderBuddy {
      */
     public static TETile[][] getWorldFromInput(String input) {
 
-        // Optional: Complete this method if you are submitting to the autograder
+        char[] inputArray = input.toCharArray();
+        String seed = "";
+        int i = 1;
+        if (inputArray[0] == "n".toCharArray()[0] || inputArray[0] == "N".toCharArray()[0]) {
+            i = 1;
+            while (isDigit(inputArray[i]) && inputArray[i] != "s".toCharArray()[0]) {
+                if (isDigit(inputArray[i])) {
+                    seed += inputArray[i];
+                }
+                i++;
+            }
+        }
 
-        throw new RuntimeException("Please fill out AutograderBuddy!");
+        TETile[][] world = new World2(Long.parseLong(seed)).createWorld();
+        InteractiveWorld2 iw2 = new InteractiveWorld2(world);
+        if (inputArray[i] == "w".toCharArray()[0]) {
+            int x = 0;
+        }
+
+        iw2.startPlaying();
+        while (i < inputArray.length) {
+            i++;
+        }
+        return world;
     }
 
 

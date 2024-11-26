@@ -18,7 +18,6 @@ public class SmallWorld {
     private int currX = 0;
     private int currY = 0;
     private int amountCoinsLeft = 0;
-    private InteractiveWorld2 previousWorld;
     public SmallWorld(TETile[][] world) {
         this.world = world;
         this.random = new Random(WIDTH);
@@ -34,9 +33,9 @@ public class SmallWorld {
     }
 
     private void buildHeader() {
-        char[] header = ".".toCharArray();
+        char[] header = "COLLECT ALL THE COINS!".toCharArray();
         int x1 = (WIDTH / 2) - header.length / 2;
-        int headerY = HEIGHT - (HEIGHT / 4);
+        int headerY = HEIGHT - (HEIGHT / 4) + 3;
         for (char c : header) {
             fill(this.world, x1, headerY, c);
             x1++;
@@ -52,7 +51,7 @@ public class SmallWorld {
     }
 
     private void addCoins() {
-        int amount = 4;
+        int amount = 5;
         int i = 1;
         while (i <= amount) {
             int currX = generateHorizontalLengths();
@@ -62,7 +61,7 @@ public class SmallWorld {
                 i++;
             }
         }
-        this.amountCoinsLeft = 4;
+        this.amountCoinsLeft = 5;
     }
 
     private void createAvatar() {
@@ -94,11 +93,9 @@ public class SmallWorld {
         world[x][y] = tile;
     }
 
-
-
     public void play() {
         resetScreen();
-        //buildHeader();
+        buildHeader();
         fillScreen();
         createAvatar();
         addCoins();
@@ -120,7 +117,6 @@ public class SmallWorld {
                 switch (c) {
                     case 'w':
                         moveUp(currX, currY);
-                        System.out.println("move up");
                         ter.renderFrame(world);
                         break;
                     case 'a':
@@ -141,9 +137,40 @@ public class SmallWorld {
                     saveToFile(toSave);
                     System.exit(0);
                 } if(this.amountCoinsLeft == 0) {
+                    TETile[][] victory = victoryScreen();
+                    long time = System.currentTimeMillis();
+                    while (System.currentTimeMillis() - time < 1000) {
+                        ter.renderFrame(victory);
+                    }
+                    while (StdDraw.hasNextKeyTyped()) {
+                        StdDraw.nextKeyTyped();
+                    }
+                    boolean keyPressed = false;
+                    while (!keyPressed) {
+                        ter.renderFrame(victory);
+                        if (StdDraw.hasNextKeyTyped()) {
+                            keyPressed = true;
+                        }
+                    }
                     return;
+
                 } if(System.currentTimeMillis() - startTime >= 10000){
-                    failureScreen();
+                    long time = System.currentTimeMillis();
+                    TETile[][] failure = failureScreen();
+                    while (System.currentTimeMillis() - time < 1000) {
+                        ter.renderFrame(failure);
+                    }
+                    while (StdDraw.hasNextKeyTyped()) {
+                        StdDraw.nextKeyTyped();
+                    }
+                    boolean keyPressed = false;
+                    while (!keyPressed) {
+                        ter.renderFrame(failure);
+                        if (StdDraw.hasNextKeyTyped()) {
+                            keyPressed = true;
+                        }
+                    }
+                    return;
                 }
 
             }
@@ -152,16 +179,56 @@ public class SmallWorld {
 
     }
 
-    private void failureScreen(){
-        char[] header = "Good game bro".toCharArray();
+    private TETile[][] victoryScreen() {
+        TETile[][] victoryScreen = new TETile[WIDTH][HEIGHT];
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < WIDTH; j++) {
+                victoryScreen[i][j] = Tileset.NOTHING;
+            }
+        }
+        char[] header = "You win!".toCharArray();
         int x1 = (WIDTH / 2) - header.length / 2;
-        int headerY = HEIGHT - (HEIGHT / 4);
+        int headerY = HEIGHT / 2 + 2;
         for (char c : header) {
-            fill(this.world, x1, headerY, c);
+            fill(victoryScreen, x1, headerY, c);
             x1++;
         }
-        long startTime = System.currentTimeMillis();
-        System.exit(0);
+        header = "Press any key to return to main world.".toCharArray();
+        int x2 = (WIDTH / 2) - header.length / 2;
+        headerY = headerY - 4;
+        for (char f : header) {
+            fill(victoryScreen, x2, headerY + 1, f);
+            x2++;
+        }
+
+        return victoryScreen;
+    }
+
+    private TETile[][] failureScreen(){
+        TETile[][] failureScreen = new TETile[WIDTH][HEIGHT];
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < WIDTH; j++) {
+                failureScreen[i][j] = Tileset.NOTHING;
+            }
+        }
+
+
+        char[] header = "You lose!".toCharArray();
+        int x1 = (WIDTH / 2) - header.length / 2;
+        int headerY = HEIGHT / 2 + 2;
+        for (char c : header) {
+            fill(failureScreen, x1, headerY, c);
+            x1++;
+        }
+        header = "Press any key to return to main world.".toCharArray();
+        int x2 = (WIDTH / 2) - header.length / 2;
+        headerY = headerY - 4;
+        for (char f : header) {
+            fill(failureScreen, x2, headerY + 1, f);
+            x2++;
+        }
+
+        return failureScreen;
     }
 
     private void moveUp(int currX, int currY) {
